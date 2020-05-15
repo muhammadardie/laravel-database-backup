@@ -1,0 +1,22 @@
+.btn-action {
+  padding: .45rem 0.8rem !important;
+}
+
+.col-form-label {
+	padding-top: calc(.65rem + 1px);
+    padding-bottom: calc(.65rem + 1px);
+    margin-bottom: 0;
+    line-height: 1.5;
+    flex: 0 0 20%;
+    max-width: 20%;
+}
+
+.col-form {
+    -ms-flex: 0 0 83.33333%;
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.dataTables_processing {
+    background-color: #212529 !important;
+}
