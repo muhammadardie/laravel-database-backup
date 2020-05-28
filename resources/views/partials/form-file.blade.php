@@ -1,33 +1,32 @@
-<div class="form-group row">
-    <label for="{{ $name }}" class="col-form-label">
-        @if( isset($required) && $required === true )
-            <span style="color:red">*</span>
-        @endif
+<div class="form-group {{ isset($multiColumn) && $multiColumn ? 'col-md-6' : 'col-md-12' }}">
+    <label for="{{ $name }}" class="{{ isset($multiColumn) && $multiColumn ? 'col-md-6' : 'col-md-12' }}">
         {{ $title }}
     </label>
     <div class="kv-avatar col-form">
-      <div id="kv-avatar-errors" class="col-md-12" style="display:none"></div> 
+      <div class="kv-avatar-errors col-md-12" style="display:none"></div> 
         <div class="file-loading">
-            <input id="{{ $name }}" name="{{ $name }}" type="file" class="form-control col-form">
+            <input name="{{ $name }}" type="file" class="form-control {{ isset($multiColumn) && $multiColumn ? 'col-md-6' : 'col-md-12' }}" {{ isset($disabled) && $disabled ? 'disabled' : ''}}>
         </div>
-        <span class="text-danger">Allowed type:jpg, jpeg, png &emsp; Max Size:2MB</span>
+        @if(!isset($disabled))
+            <span class="text-danger">Allowed type:jpg, jpeg, png &emsp; Max Size:2MB</span>
+        @endif
     </div>
 </div>
 <script>
-$("#{{ $name }}").fileinput({
+$("input[name={{ $name }}]").fileinput({
+    showConsoleLogs: false,
     showUpload: false,
     showBrowse: false,
     fileActionSettings: {
       showZoom: false
     },
     browseOnZoneClick: true,
-    required: true,
     theme: 'fas',
     overwriteInitial: true,
     maxFileSize: 2000,
     showClose: false,
     showCaption: false,
-    elErrorContainer: '#kv-avatar-errors',
+    elErrorContainer: '.kv-avatar-errors',
     msgErrorClass: 'alert alert-block alert-danger',
     allowedFileTypes: ['image']   // allow only images
 });

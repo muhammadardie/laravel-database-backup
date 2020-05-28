@@ -4,16 +4,18 @@ namespace App\Http\Controllers\UserManagement;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRepository;
+use App\Services\UserService;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\EditPasswordRequest;
+use App\Http\Requests\EditProfileRequest;
 
 class UserController extends Controller
 {
-    protected $userRepo;
+    protected $userService;
     
-    public function __construct(UserRepository $userRepo)
+    public function __construct(UserService $userService)
     {
-        $this->userRepo = $userRepo;
+        $this->userService = $userService;
     }
     
     /**
@@ -23,17 +25,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view ('user_management.user_index');
-    }
+        $roleOpt = $this->userService->getModel()->roleOption();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view ('user_management.user_create');
+        return view ('user_management.user_index', compact('roleOpt'));
     }
 
     /**
@@ -44,9 +38,9 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $store = $this->userRepo->storeUser($request);
-
-        return redirect()->route('user.index')->with(\Helper::alertStatus('store', $store));
+        $store = $this->userService->storeUser($request);
+        
+        return response()->json(['status' => $store]);
     }
 
     /**
@@ -57,22 +51,9 @@ class UserController extends Controller
      */
     public function show($userId)
     {
-        $user = $this->userRepo->show($userId);
+        $user = $this->userService->show($userId);
 
-        return view('user_management.user_show', compact('user'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($userId)
-    {
-        $user = $this->userRepo->show($userId);
-
-        return view('user_management.user_edit', compact('user'));
+        return response()->json($user);
     }
 
     /**
@@ -84,9 +65,37 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $userId)
     {
-        $update = $this->userRepo->updateUser($request, $userId);
+        $update = $this->userService->updateUser($request, $userId);
 
-        return redirect()->route('user.index')->with(\Helper::alertStatus('update', $update));
+        return response()->json(['status' => $update]);
+    }
+
+    /**
+     * Update password user
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int 
+     * @return \Illuminate\Http\Response
+     */
+    public function changePassword(EditPasswordRequest $request, $userId)
+    {
+        $update = $this->userService->updateUser($request, $userId);
+
+        return response()->json(['status' => $update]);
+    }
+
+    /**
+     * Update profile user
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int 
+     * @return \Illuminate\Http\Response
+     */
+    public function changeProfile(EditProfileRequest $request, $userId)
+    {
+        $update = $this->userService->updateUser($request, $userId);
+
+        return response()->json(['status' => $update]);
     }
 
     /**
@@ -97,9 +106,9 @@ class UserController extends Controller
      */
     public function destroy($userId)
     {
-       $deleteImage = $this->userRepo->deleteFiles('user', $this->userRepo->show($user)->photo);
+       $deleteImage = $this->userService->deleteFiles('user', $this->userService->show($userId)->photo);
 
-       return $this->userRepo->delete($user);
+       return $this->userService->delete($userId);
     }
 
     /**
@@ -109,8 +118,6 @@ class UserController extends Controller
     */
     public function ajaxDatatable(Request $request)
     {
-        $route = 'user'; // if routing and table have different name
-
-        return $this->userRepo->makeDatatable($request, $route);
+        return $this->userService->makeDatatableUser($request);
     }
 }

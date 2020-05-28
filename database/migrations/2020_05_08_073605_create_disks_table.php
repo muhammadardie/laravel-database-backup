@@ -20,7 +20,7 @@ class CreateDisksTable extends Migration
             $table->string('username');
             $table->string('password');
             $table->integer('port')->default(22);
-            $table->string('path')->default('~');
+            $table->string('path')->nullable();
             $table->timestamps();
         });
     }

@@ -45,7 +45,8 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root'   => public_path('uploaded_files'),
+            'url'    => public_path('uploaded_files')
         ],
 
         'public' => [
@@ -63,6 +64,38 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
+        ],
+        // 'sftp' => [
+        //     'driver'   => 'sftp',
+        //     'host'     => 'dev.kamarkerja.com',
+        //     'username' => 'root',
+        //     'password' => 'd3v105@du4z113',
+        //     'visibility' => 'public',
+
+        //     // Settings for SSH key based authentication...
+        //     // 'privateKey' => '/path/to/privateKey',
+        //     // 'password' => 'encryption-password',
+
+        //     // Optional SFTP Settings...
+        //     // 'port' => 22,
+        //     'root' => '/home/duaz/',
+        //     // 'timeout' => 30,
+        // ],
+
+        'sftp' => [
+            'driver'   => 'sftp',
+            'host'     => 'yukbelajardirumah.com',
+            'username' => 'duaz',
+            'password' => 'h1Uv#uI^Coi@',
+
+            // Settings for SSH key based authentication...
+            // 'privateKey' => '/path/to/privateKey',
+            // 'password' => 'encryption-password',
+
+            // Optional SFTP Settings...
+            // 'port' => 22,
+            'root' => '/home/duaz/',
+            // 'timeout' => 30,
         ],
 
     ],

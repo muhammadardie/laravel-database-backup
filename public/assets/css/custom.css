@@ -2,7 +2,7 @@
   padding: .45rem 0.8rem !important;
 }
 
-.col-form-label {
+.single-label {
 	padding-top: calc(.65rem + 1px);
     padding-bottom: calc(.65rem + 1px);
     margin-bottom: 0;
@@ -11,7 +11,7 @@
     max-width: 20%;
 }
 
-.col-form {
+.single-input {
     -ms-flex: 0 0 83.33333%;
     flex: 0 0 50%;
     max-width: 50%;
@@ -19,4 +19,89 @@
 
 .dataTables_processing {
     background-color: #212529 !important;
+}
+
+/*begin select2 adaptation to theme*/
+.select2-container--default .select2-selection--single{
+    background-color: #1a2035;
+}
+.select2-search--dropdown{
+    background-color: #1a2035;
+}
+.select2-search__field{
+    background-color: #1a2035;
+    color: #fff;
+}
+.select2-results { 
+    background-color: #1a2035;
+}
+.select2-container--default .select2-selection--single {
+    border: 1px solid #2f374b;
+    height: 43px !important;
+}   
+.select2-selection__rendered {
+    line-height: 43px !important;
+    color: #fff !important;
+}
+.select2-selection__arrow {
+    height: 43px !important;
+}
+/*end select2 adaption theme*/
+
+/*begin modal adaption theme*/
+.modal-content {
+    background-color: #202940;
+    color: white !important;
+}
+button.close {
+    color: white !important;
+}
+
+button.close.kv-error-close {
+    color: black !important;
+}
+}
+
+.modal-header {
+    border-bottom: 1px solid rgb(48, 56, 77)!important;
+}
+.modal-footer {
+    border-top: 1px solid rgb(48, 56, 77)!important;
+}
+/*end modal adaption theme*/
+
+.form-control[disabled], .form-control[readonly] {
+    background: transparent !important;
+}
+
+.kv-avatar-errors {
+    color: red !important;
+}
+
+.btn-show-datatable , .btn-edit-datatable , .btn-delete-datatable, .btn-download-datatable {
+    padding: .45rem 1rem !important;
+}
+
+.btn-download-datatable > span {
+    color: #8e9593 !important;
+}
+
+a.logo > img {
+    width: 30px;
+}
+
+a.logo > h2 {
+    margin-left: 7px;
+    display: inline;
+    font-size: 15px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.link-collapse:hover {
+    color: #8d9498 !important;
+}
+
+.delete-account {
+    cursor: pointer;
 }

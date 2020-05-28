@@ -16,12 +16,11 @@ class CreateSourcesTable extends Migration
         Schema::create('sources', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('type', ['mysql', 'postgresql']);
+            $table->enum('type', ['postgresql']);
             $table->string('host');
             $table->string('username');
             $table->string('password');
-            $table->integer('port')->default(3306);
-            $table->string('database');
+            $table->integer('port')->default(5432);
             $table->timestamps();
         });
     }

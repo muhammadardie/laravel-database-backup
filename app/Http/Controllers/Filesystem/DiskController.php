@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Filesystem;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Repositories\DiskRepository;
+use App\Services\DiskService;
 use App\Http\Requests\DiskRequest;
 
 class DiskController extends Controller
 {
-    protected $diskRepo;
+    protected $diskService;
     
-    public function __construct(DiskRepository $diskRepo)
+    public function __construct(DiskService $diskService)
     {
-        $this->diskRepo = $diskRepo;
+        $this->diskService = $diskService;
     }
     
     /**
@@ -27,16 +27,6 @@ class DiskController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view ('filesystem.disk_create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -44,9 +34,9 @@ class DiskController extends Controller
      */
     public function store(DiskRequest $request)
     {
-        $store = $this->diskRepo->storeDisk($request);
-
-        return redirect()->route('disk.index')->with(\Helper::alertStatus('store', $store));
+        $store = $this->diskService->store($request->all());
+        
+        return response()->json(['status' => $store]);
     }
 
     /**
@@ -57,22 +47,9 @@ class DiskController extends Controller
      */
     public function show($diskId)
     {
-        $disk = $this->diskRepo->show($diskId);
+        $disk = $this->diskService->show($diskId);
 
-        return view('filesystem.disk_show', compact('disk'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($diskId)
-    {
-        $disk = $this->diskRepo->show($diskId);
-
-        return view('filesystem.disk_edit', compact('disk'));
+        return response()->json($disk);
     }
 
     /**
@@ -84,9 +61,13 @@ class DiskController extends Controller
      */
     public function update(DiskRequest $request, $diskId)
     {
-        $update = $this->diskRepo->updateDisk($request, $diskId);
+        if($request['password'] == ''){
+            unset($request['password']);
+        }
 
-        return redirect()->route('disk.index')->with(\Helper::alertStatus('update', $update));
+        $update = $this->diskService->update($request->all(), $diskId);
+
+        return response()->json(['status' => $update]);
     }
 
     /**
@@ -97,9 +78,7 @@ class DiskController extends Controller
      */
     public function destroy($diskId)
     {
-       $deleteImage = $this->diskRepo->deleteFiles('disk', $this->diskRepo->show($disk)->photo);
-
-       return $this->diskRepo->delete($disk);
+       return $this->diskService->delete($diskId);
     }
 
     /**
@@ -109,8 +88,8 @@ class DiskController extends Controller
     */
     public function ajaxDatatable(Request $request)
     {
-        $route = 'disk'; // if routing and table have different name
+        $route = 'disk'; // if route not same with table name
 
-        return $this->diskRepo->makeDatatable($request, $route);
+        return $this->diskService->makeDatatable($request, $route);
     }
 }

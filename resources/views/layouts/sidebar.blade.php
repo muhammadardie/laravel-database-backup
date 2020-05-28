@@ -3,13 +3,19 @@
         <div class="sidebar-content">
             <div class="user">
                 <div class="avatar-sm float-left mr-2">
-                    <img src="assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                    <img 
+                        src="{{ !empty(Auth::user()->photo) ? 
+                                asset('uploaded_files/user') .'/'. Auth::user()->photo :
+                                asset('assets/img/avatar.png')  
+                            }}"
+                        alt="..." class="avatar-img rounded-circle" 
+                    />
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                         <span>
-                            Hizrian
-                            <span class="user-level">Administrator</span>
+                            {{ Auth::user()->name }}
+                            <span class="user-level">{{ Auth::user()->role }}</span>
                             <span class="caret"></span>
                         </span>
                     </a>
@@ -18,13 +24,23 @@
                     <div class="collapse in" id="collapseExample">
                         <ul class="nav">
                             <li>
-                                <a href="#profile">
+                                <a href="#profile" class="edit-profile-account">
                                     <span class="link-collapse">Profile</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#settings">
-                                    <span class="link-collapse">Settings</span>
+                                <a href="#settings" class="edit-password-account">
+                                    <span class="link-collapse">Change Password</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#settings" class="delete-account" data-href="{{ url('') }}">
+                                    <span class="link-collapse">Delete Account</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                    <span class="link-collapse">Logout</span>
                                 </a>
                             </li>
                         </ul>
@@ -66,16 +82,11 @@
                         <p>Filesystem</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse {{ $url == 'filesystem' ? 'show' : '' }}" id="filesystem">
+                    <div class="collapse {{ in_array('filesystem', $url) ? 'show' : '' }}" id="filesystem">
                         <ul class="nav nav-collapse">
-                            <li class="{{ $url == 'disk' ? 'active' : '' }}">
+                            <li class="{{ in_array('disk', $url) ? 'active' : '' }}">
                                 <a href="{{ route('disk.index') }}">
                                     <span class="sub-item">Disk</span>
-                                </a>
-                            </li>
-                            <li class="{{ $url == 'file-manager' ? 'active' : '' }}">
-                                <a href="#">
-                                    <span class="sub-item">File Manager</span>
                                 </a>
                             </li>
                         </ul>
@@ -87,15 +98,15 @@
                         <p>Database</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse {{ $url == 'database' ? 'show' : '' }}" id="database">
+                    <div class="collapse {{ in_array('database', $url) ? 'show' : '' }}" id="database">
                         <ul class="nav nav-collapse">
-                            <li class="{{ $url == 'source' ? 'active' : '' }}">
-                                <a href="#">
+                            <li class="{{ in_array('source', $url) ? 'active' : '' }}">
+                                <a href="{{ route('source.index') }}">
                                     <span class="sub-item">Source</span>
                                 </a>
                             </li>
-                            <li class="{{ $url == 'backup' ? 'active' : '' }}">
-                                <a href="#">
+                            <li class="{{ in_array('backup', $url) ? 'active' : '' }}">
+                                <a href="{{ route('backup.index') }}">
                                     <span class="sub-item">Backup</span>
                                 </a>
                             </li>

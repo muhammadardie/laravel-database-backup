@@ -1,18 +1,60 @@
 @extends('layouts.app')
-@section('content')    
-    <div class="content">
+@section('content') 
+
+<script src="assets/plugins/particles.js/particles.min.js"></script>
+<style>
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 80%;
+}
+
+.count-particles {
+    background: #000022;
+    position: absolute;
+    top: 48px;
+    left: 0;
+    width: 80px;
+    color: #13E8E9;
+    font-size: .8em;
+    text-align: left;
+    text-indent: 4px;
+    line-height: 14px;
+    padding-bottom: 2px;
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+.js-count-particles {
+    font-size: 1.1em;
+}
+
+#stats, .count-particles {
+    -webkit-user-select: none;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+#stats {
+    border-radius: 3px 3px 0 0;
+    overflow: hidden;
+}
+
+.count-particles {
+    border-radius: 0 0 3px 3px;
+}
+</style>
+    <div class="content" id="particles-js">
         <div class="page-inner">
             <div class="mt-2 mb-4">
-                <h2 class="text-white pb-2">Welcome back, Hizrian!</h2>
-                <h5 class="text-white op-7 mb-4">Yesterday I was clever, so I wanted to change the world. Today I am wise, so I am changing myself.</h5>
+                <h2 class="text-white pb-2">Welcome back, {{ Auth::user()->name }}!</h2>
             </div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="card card-dark bg-primary-gradient">
                         <div class="card-body pb-0">
-                            <div class="h1 fw-bold float-right">+5%</div>
-                            <h2 class="mb-2">17</h2>
-                            <p>Users online</p>
+                            <h2 class="mb-2">{{ $countBackup }}</h2>
+                            <p>Total Backup created</p>
                             <div class="pull-in sparkline-fix chart-as-background">
                                 <div id="lineChart"><canvas width="327" height="70" style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas></div>
                             </div>
@@ -22,9 +64,8 @@
                 <div class="col-md-4">
                     <div class="card card-dark bg-secondary-gradient">
                         <div class="card-body pb-0">
-                            <div class="h1 fw-bold float-right">-3%</div>
-                            <h2 class="mb-2">27</h2>
-                            <p>New Users</p>
+                            <h2 class="mb-2">{{ $countDisk }}</h2>
+                            <p>Total Disk created</p>
                             <div class="pull-in sparkline-fix chart-as-background">
                                 <div id="lineChart2"><canvas width="327" height="70" style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas></div>
                             </div>
@@ -34,9 +75,8 @@
                 <div class="col-md-4">
                     <div class="card card-dark bg-success2">
                         <div class="card-body pb-0">
-                            <div class="h1 fw-bold float-right">+7%</div>
-                            <h2 class="mb-2">213</h2>
-                            <p>Transactions</p>
+                            <h2 class="mb-2">{{ $countSource }}</h2>
+                            <p>Total Source created</p>
                             <div class="pull-in sparkline-fix chart-as-background">
                                 <div id="lineChart3"><canvas width="327" height="70" style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas></div>
                             </div>
@@ -44,37 +84,114 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-head-row">
-                                <div class="card-title">User Statistics</div>
-                                <div class="card-tools">
-                                    <a href="#" class="btn btn-info btn-border btn-round btn-sm mr-2">
-                                        <span class="btn-label">
-                                            <i class="fa fa-pencil"></i>
-                                        </span>
-                                        Export
-                                    </a>
-                                    <a href="#" class="btn btn-info btn-border btn-round btn-sm">
-                                        <span class="btn-label">
-                                            <i class="fa fa-print"></i>
-                                        </span>
-                                        Print
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="chart-container" style="min-height: 375px">
-                                <canvas id="statisticsChart"></canvas>
-                            </div>
-                            <div id="myChartLegend"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+     
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    },
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 400,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
 @endsection

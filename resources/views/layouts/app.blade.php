@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Duaz - Backup</title>
+    <title>Database - Backup</title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <base href="{{ asset('') }}">
     <link rel="icon" href="db.ico">
 
@@ -46,11 +48,20 @@
     <!-- JQuery BlockUI -->
     <script src="assets/plugins/jquery-blockui/jquery-blockui.js"></script>
 
+    <!-- Select2 -->
+    <script src="assets/plugins/select2/select2.min.js"></script>
+
+    <!-- Alertify -->
+    <script src="assets/plugins/alertify/alertify.min.js"></script>    
+
     <!-- JS Validation -->
     <script src="vendor/jsvalidation/js/jsvalidation.min.js" type="text/javascript"></script>
     
     <!-- Atlantis JS -->
     <script src="assets/js/atlantis.min.js"></script>
+
+    <!-- Custom script -->
+    <script src="assets/js/custom.js"></script>
     <script>
         WebFont.load({
             google: {"families":["Lato:300,400,700,900"]},
@@ -66,6 +77,12 @@
     <link rel="stylesheet" href="assets/css/atlantis.min.css">
     <!-- Bootstrap File Input -->
     <link rel="stylesheet" href="assets/plugins/bootstrap-fileinput/css/fileinput.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="assets/plugins/select2/select2.min.css">
+    <!-- Alertify -->
+    <link rel="stylesheet" href="assets/plugins/alertify/css/alertify.css">
+    <link rel="stylesheet" href="assets/plugins/alertify/css/themes/default.min.css">
+    <!-- Custom -->
     <link rel="stylesheet" href="assets/css/custom.css">
 </head>
 <body data-background-color="dark">

@@ -202,51 +202,14 @@ class Helper
         }
     }
 
-    /**
-    * Flash data in alert Format for index page
-    * @param $status store/update
-    * @param $result result from store/update (baseRepository)
-    * @return alert with class and text reserved
-    */
-    public static function alertStatus($status, $result){
-        $alert = [];
-        $alert['alert'] = $result === true ? 'alert-success' : 'alert-danger';
-        
-        if($status == 'store' && $result === true){
-            $alert['alert-text'] = \Lang::get('db.saved');    
-        } elseif($status == 'store' && $result === false) {
-            $alert['alert-text'] = \Lang::get('db.failed_saved');
-        } elseif($status == 'update' && $result === true) {
-            $alert['alert-text'] = \Lang::get('db.updated');
-        } elseif ($status == 'update' && $result === false) {
-            $alert['alert-text'] = \Lang::get('db.failed_updated');
+    public static function bytesToHuman($bytes)
+    {
+        $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
+
+        for ($i = 0; $bytes > 1024; $i++) {
+            $bytes /= 1024;
         }
 
-        return $alert;
-    }
-
-    /**
-    * get image(base64) using intervention from cached(redis) or original source
-    *
-    * @param $folder | folder where store image ex:employee
-    * @param $name   | image name ex:EMPLOYEE_1_12070213.jpg
-    * @param $width  | width that want to used default 150px
-    * @param $height | height that want to used 150px
-    * @return image(base64) from cached(redis) or original source
-    */
-    public static function getImage($folder,$name,$form=null,$width=300,$height=300){
-        if($form === true && $name == null){
-            return null;
-        }else {
-            $name        = $name == null ? 'noimage.png' : $name;
-            $exists      = \Storage::exists($folder.'/'.$name);
-            $src         = $exists ? \Storage::get($folder.'/'.$name) : \Storage::get('noimage.png');
-            $cachedImage = \Image::cache(function($image) use ($src,$width,$height) {
-                                return $image->make($src)->resize($width,$height);
-                            }, 10, true);
-            $image       = $cachedImage->encode('data-url');
-
-            return $image;
-        }
+        return round($bytes, 2) . ' ' . $units[$i];
     }
 }

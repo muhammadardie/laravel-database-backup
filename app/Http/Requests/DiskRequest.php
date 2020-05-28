@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class DiskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +23,17 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        $user_id = ($this->user) ? $this->user : 0;
+        $disk_id = ($this->disk) ? $this->disk : 0;
         $returns = [
-            'email'        => ['required','email', 'max:150', 'unique:user,email,'.$user_id.',user_id'],
-            'karyawan_id'  => ['required', 'integer'],
-            'password'     => ['required','string','min:6','confirmed'],
+            'name'     => ['required', 'max:150'],
+            'host'     => ['required', 'max:150', 'unique:disks,host,'.$disk_id.',id'],
+            'username' => ['required', 'max:150'],  
+            'password' => ['required', 'max:150'],
+            'port'     => ['required', 'numeric']
         ];
-        
-        if($user_id != 0){
-            $returns['password'] = ['nullable','string','min:6','confirmed'];
+
+        if($disk_id != 0){
+            $returns['password'] = ['nullable'];
         }
 
         return $returns;

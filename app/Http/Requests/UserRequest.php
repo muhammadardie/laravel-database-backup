@@ -27,8 +27,9 @@ class UserRequest extends FormRequest
         $returns = [
             'name'     => ['required', 'max:150'],
             'email'    => ['required','email', 'max:150', 'unique:users,email,'.$user_id.',id'],
+            'role'     => ['required'],
             'password' => ['required','string','min:6','confirmed'],
-            'photo'    => ['required', 'image', 'max:2000']
+            'photo'    => ['image', 'max:2000']
         ];
         
         if($user_id != 0){

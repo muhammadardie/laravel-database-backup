@@ -21,6 +21,8 @@ Route::group(['middleware' => ['auth', 'web']], function () {
 	/* user management */
 	Route::prefix('user-management')->group(function () {
 		Route::get('/user/ajaxDatatable', 'UserManagement\UserController@ajaxDatatable')->name('user.ajaxDatatable');
+		Route::put('/user/changePassword/{id}', 'UserManagement\UserController@changePassword')->name('user.changePassword');
+		Route::put('/user/changeProfile/{id}', 'UserManagement\UserController@changeProfile')->name('user.changeProfile');
 		Route::resource('user', 'UserManagement\UserController', ['names' => 'user']);
 	});
 
@@ -28,8 +30,6 @@ Route::group(['middleware' => ['auth', 'web']], function () {
 	Route::prefix('filesystem')->group(function () {
 		Route::get('/disk/ajaxDatatable', 'Filesystem\DiskController@ajaxDatatable')->name('disk.ajaxDatatable');
 		Route::resource('disk', 'Filesystem\DiskController', ['names' => 'disk']);
-
-		Route::get('/file-manager', 'Filesystem\FileManagerController@index')->name('file-manager.index');
 	});
 
 	/* Database */
@@ -37,8 +37,13 @@ Route::group(['middleware' => ['auth', 'web']], function () {
 		Route::get('/source/ajaxDatatable', 'Database\SourceController@ajaxDatatable')->name('source.ajaxDatatable');
 		Route::resource('source', 'Database\SourceController', ['names' => 'source']);
 
-		Route::get('/backup/ajaxDatatable', 'Database\SourceController@ajaxDatatable')->name('backup.ajaxDatatable');
-		Route::resource('backup', 'Database\SourceController', ['names' => 'backup']);
+		Route::get('/backup', 'Database\BackupController@index')->name('backup.index');
+		Route::get('/backup/ajaxDatatable', 'Database\BackupController@ajaxDatatable')->name('backup.ajaxDatatable');
+		Route::get('/backup/getDatabaseList', 'Database\BackupController@getDatabaseList')->name('backup.getDatabaseList');
+		Route::get('/backup/show/{id}', 'Database\BackupController@show')->name('backup.show');
+		Route::get('/backup/download/{id}', 'Database\BackupController@download')->name('backup.download');
+		Route::delete('/backup/destroy/{id}', 'Database\BackupController@destroy')->name('backup.destroy');
+		Route::post('/backup/createBackup', 'Database\BackupController@createBackup')->name('backup.createBackup');
 	});
 
 	

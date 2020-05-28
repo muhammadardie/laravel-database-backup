@@ -28,23 +28,20 @@
          <div class="col-md-12">
             <div class="card">
                <div class="card-header">
-                  <a href="{{ route('user.create') }}" class="btn btn-primary">
-                    <span class="btn-label">
+                  <button class="btn btn-primary btn-add" data-toggle="modal" data-target="#modal-create-user">
                     <i class="fa fa-plus"></i>
-                    </span>
                       Add User
-                  </a>
+                  </button>
                </div>
                <div class="card-body">
-                  @include('partials.alert-status')
                   <div class="table-responsive">
-                     <table id="user-table" class="display table table-striped table-hover" >
+                     <table id="table" class="display table table-striped table-hover" >
                         <thead>
                            <tr>
                               <th>No</th>
                               <th>Name</th>
                               <th>Email</th>
-                              <th>Created At</th>
+                              <th>Role</th>
                               <th>Action</th>
                            </tr>
                         </thead>
@@ -58,7 +55,7 @@
 </div>
 <script>
    $(function() {
-       var t = $('#user-table').DataTable({
+       var t = $('#table').DataTable({
          processing: true,
          serverSide: true,
          ajax: '{{ route('user.ajaxDatatable') }}',
@@ -66,7 +63,7 @@
              {data: 'rownum', searchable: false},
              {data: 'name', name: 'users.name'},
              {data: 'email', name: 'users.email'},
-             {data: 'created_at', name: 'users.created_at'},
+             {data: 'role', name: 'users.role'},
              {data: 'action', orderable:false, searchable: false, className: 'text-center'},
          ],
        "drawCallback": function(settings) {
@@ -78,5 +75,8 @@
    });
    
 </script>
-@include('partials.script-delete', ['text' => __('user'), 'table' => '#user-table'])
+@include('user_management.user_create')
+@include('user_management.user_show')
+@include('user_management.user_edit')
+@include('partials.datatable-delete', ['text' => __('user'), 'table' => '#table'])
 @endsection

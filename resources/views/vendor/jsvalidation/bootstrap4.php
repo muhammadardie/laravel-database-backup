@@ -11,6 +11,8 @@
                         element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
                         error.insertAfter(element.parent());
                         // else just place the validation message immediately after the input
+                    } else if(element.attr('data-select2-id') !== typeof undefined && element.next('.select2-container').length) {
+                        error.insertAfter(element.next('.select2-container'));
                     } else {
                         error.insertAfter(element);
                     }
