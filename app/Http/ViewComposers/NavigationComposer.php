@@ -12,6 +12,8 @@ class NavigationComposer
 		$user    = new User;
 		$roleOpt = $user->roleOption();
 		
+		if(\Auth::user()->role === 'User') unset($roleOpt['Admin']); 
+
 	    $view->with('url',  $url)
 	    	 ->with('roleOpt', $roleOpt);
 	}

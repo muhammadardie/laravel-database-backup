@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Repositories;
 
 use App\Models\Disk;
 
-class DiskService extends BaseService
+class DiskRepository extends BaseRepository
 {
     public function __construct(Disk $disk)
     {

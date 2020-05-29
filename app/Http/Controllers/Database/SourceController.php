@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Database;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\SourceService;
+use App\Repositories\SourceRepository;
 use App\Http\Requests\SourceRequest;
 
 class SourceController extends Controller
 {
-    protected $sourceService;
+    protected $sourceRepository;
     
-    public function __construct(SourceService $sourceService)
+    public function __construct(SourceRepository $sourceRepository)
     {
-        $this->sourceService = $sourceService;
+        $this->sourceRepository = $sourceRepository;
     }
     
     /**
@@ -23,7 +23,7 @@ class SourceController extends Controller
      */
     public function index()
     {
-        $type = $this->sourceService->getModel()->type();
+        $type = $this->sourceRepository->getModel()->type();
 
         return view ('database.source_index', compact('type'));
     }
@@ -36,7 +36,7 @@ class SourceController extends Controller
      */
     public function store(SourceRequest $request)
     {
-        $store = $this->sourceService->store($request->all());
+        $store = $this->sourceRepository->store($request->all());
         
         return response()->json(['status' => $store]);
     }
@@ -49,7 +49,7 @@ class SourceController extends Controller
      */
     public function show($sourceId)
     {
-        $source = $this->sourceService->show($sourceId);
+        $source = $this->sourceRepository->show($sourceId);
 
         return response()->json($source);
     }
@@ -67,7 +67,7 @@ class SourceController extends Controller
             unset($request['password']);
         }
 
-        $update = $this->sourceService->update($request->all(), $sourceId);
+        $update = $this->sourceRepository->update($request->all(), $sourceId);
 
         return response()->json(['status' => $update]);
     }
@@ -80,7 +80,7 @@ class SourceController extends Controller
      */
     public function destroy($sourceId)
     {
-       return $this->sourceService->delete($sourceId);
+       return $this->sourceRepository->delete($sourceId);
     }
 
     /**
@@ -92,6 +92,6 @@ class SourceController extends Controller
     {
         $route = 'source'; // if route not same with table name
 
-        return $this->sourceService->makeDatatable($request, $route);
+        return $this->sourceRepository->makeDatatable($request, $route);
     }
 }

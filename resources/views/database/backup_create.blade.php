@@ -75,7 +75,7 @@
             
             $("select[name=database]").html(listOpt);
           } else {
-            errorAjax('check disk or source configuration', 'retrieve')
+            errorAjax(res, 'retrieve')
           }
             
         },

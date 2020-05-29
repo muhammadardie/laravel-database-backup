@@ -12,6 +12,6 @@ return [
     | Default value below usually used in linux machine
     */
 
-    'pgdump' => '"C:\Program Files\PostgreSQL\9.5\bin\pg_dump.exe"',
-    'psql'   => '"C:\Program Files\PostgreSQL\9.5\bin\psql.exe"'
+    'pgdump' => 'pg_dump',
+    'psql'   => 'psql'
 ];

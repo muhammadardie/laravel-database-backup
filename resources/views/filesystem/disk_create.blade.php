@@ -72,27 +72,28 @@
 {!! JsValidator::formRequest('App\Http\Requests\DiskRequest', '#form-create-disk') !!}
 <script>
   $('#form-create-disk').on('submit', function(e) {
-        e.preventDefault();
-        
-        if( $(this).valid() ){
-            blockPage()
-          
-            $.ajax({
-               type: "POST",
-               headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               },
-               url:'{{ route('disk.store') }}',
-               cache: false,
-               processData: false,
-               data: new FormData($('#form-create-disk')[0]), // The form with the file inputs.
-               processData: false,
-               contentType: false                    // Using FormData, no need to process data.
-            }).done(function(res){
-               successAjax('modal-create-disk', 'saved', res) // (close modal by modal id, message, response)
-            }).fail(function(err){
-               errorAjax(err, 'saved')
-            });
-        }
+    e.preventDefault();
+    
+    if( $(this).valid() ){
+        blockPage()
+      
+        $.ajax({
+           type: "POST",
+           headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
+           url:'{{ route('disk.store') }}',
+           cache: false,
+           processData: false,
+           data: new FormData($('#form-create-disk')[0]), // The form with the file inputs.
+           processData: false,
+           contentType: false                    // Using FormData, no need to process data.
+        }).done(function(res){
+           successAjax('modal-create-disk', 'saved', res) // (close modal by modal id, message, response)
+        }).fail(function(err){
+           errorAjax(err, 'saved')
+        });
+    }
   });
+
 </script>

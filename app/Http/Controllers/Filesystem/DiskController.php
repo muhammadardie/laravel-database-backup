@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Filesystem;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\DiskService;
+use App\Repositories\DiskRepository;
 use App\Http\Requests\DiskRequest;
 
 class DiskController extends Controller
 {
-    protected $diskService;
+    protected $diskRepository;
     
-    public function __construct(DiskService $diskService)
+    public function __construct(DiskRepository $diskRepository)
     {
-        $this->diskService = $diskService;
+        $this->diskRepository = $diskRepository;
     }
     
     /**
@@ -34,7 +34,7 @@ class DiskController extends Controller
      */
     public function store(DiskRequest $request)
     {
-        $store = $this->diskService->store($request->all());
+        $store = $this->diskRepository->store($request->all());
         
         return response()->json(['status' => $store]);
     }
@@ -47,7 +47,7 @@ class DiskController extends Controller
      */
     public function show($diskId)
     {
-        $disk = $this->diskService->show($diskId);
+        $disk = $this->diskRepository->show($diskId);
 
         return response()->json($disk);
     }
@@ -65,7 +65,7 @@ class DiskController extends Controller
             unset($request['password']);
         }
 
-        $update = $this->diskService->update($request->all(), $diskId);
+        $update = $this->diskRepository->update($request->all(), $diskId);
 
         return response()->json(['status' => $update]);
     }
@@ -78,7 +78,7 @@ class DiskController extends Controller
      */
     public function destroy($diskId)
     {
-       return $this->diskService->delete($diskId);
+       return $this->diskRepository->delete($diskId);
     }
 
     /**
@@ -90,6 +90,6 @@ class DiskController extends Controller
     {
         $route = 'disk'; // if route not same with table name
 
-        return $this->diskService->makeDatatable($request, $route);
+        return $this->diskRepository->makeDatatable($request, $route);
     }
 }

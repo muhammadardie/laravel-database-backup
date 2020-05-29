@@ -27,12 +27,14 @@
       <div class="row">
          <div class="col-md-12">
             <div class="card">
-               <div class="card-header">
-                  <button class="btn btn-primary btn-add" data-toggle="modal" data-target="#modal-create-user">
-                    <i class="fa fa-plus"></i>
-                      Add User
-                  </button>
-               </div>
+               @if (\Auth::user()->role === 'Admin')
+                 <div class="card-header">
+                    <button class="btn btn-primary btn-add" data-toggle="modal" data-target="#modal-create-user">
+                      <i class="fa fa-plus"></i>
+                        Add User
+                    </button>
+                 </div>
+               @endif
                <div class="card-body">
                   <div class="table-responsive">
                      <table id="table" class="display table table-striped table-hover" >
@@ -63,7 +65,7 @@
              {data: 'rownum', searchable: false},
              {data: 'name', name: 'users.name'},
              {data: 'email', name: 'users.email'},
-             {data: 'role', name: 'users.role'},
+             {data: 'role', name: 'users.role', width: '15%'},
              {data: 'action', orderable:false, searchable: false, className: 'text-center'},
          ],
        "drawCallback": function(settings) {

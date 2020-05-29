@@ -1,8 +1,6 @@
 <?php
 namespace App\Helpers;
 
-use DB;
-
 class Helper
 {
     /**
@@ -138,36 +136,49 @@ class Helper
         }
     }
 
-    public static function terbilang($x){
+    /**
+    * Format number into indonesian word of number
+    *
+    * @param $num number
+    * @return indonesian word of number from input
+    */
+    public static function terbilang($num){
         $_this = new self;
-        $x = abs($x);
+        $num = abs($num);
         $angka = array("", "SATU", "DUA", "TIGA", "EMPAT", "LIMA",
         "ENAM", "TUJUH", "DELAPAN", "SEMBILAN", "SEPULUH", "SEBELAS");
         $temp = "";
-        if ($x <12) {
-            $temp = " ". $angka[$x];
-        } else if ($x <20) {
-            $temp = $_this->terbilang($x - 10). " BELAS";
-        } else if ($x <100) {
-            $temp = $_this->terbilang($x/10)." PULUH". $_this->terbilang($x % 10);
-        } else if ($x <200) {
-            $temp = " SERATUS" . $_this->terbilang($x - 100);
-        } else if ($x <1000) {
-            $temp = $_this->terbilang($x/100) . " RATUS" . $_this->terbilang($x % 100);
-        } else if ($x <2000) {
-            $temp = " SERIBU" . $_this->terbilang($x - 1000);
-        } else if ($x <1000000) {
-            $temp = $_this->terbilang($x/1000) . " RIBU" . $_this->terbilang($x % 1000);
-        } else if ($x <1000000000) {
-            $temp = $_this->terbilang($x/1000000) . " JUTA" . $_this->terbilang($x % 1000000);
-        } else if ($x <1000000000000) {
-            $temp = $_this->terbilang($x/1000000000) . " MILYAR" . $_this->terbilang(fmod($x,1000000000));
-        } else if ($x <1000000000000000) {
-            $temp = $_this->terbilang($x/1000000000000) . " TRILYUN" . $_this->terbilang(fmod($x,1000000000000));
+        if ($num <12) {
+            $temp = " ". $angka[$num];
+        } else if ($num <20) {
+            $temp = $_this->terbilang($num - 10). " BELAS";
+        } else if ($num <100) {
+            $temp = $_this->terbilang($num/10)." PULUH". $_this->terbilang($num % 10);
+        } else if ($num <200) {
+            $temp = " SERATUS" . $_this->terbilang($num - 100);
+        } else if ($num <1000) {
+            $temp = $_this->terbilang($num/100) . " RATUS" . $_this->terbilang($num % 100);
+        } else if ($num <2000) {
+            $temp = " SERIBU" . $_this->terbilang($num - 1000);
+        } else if ($num <1000000) {
+            $temp = $_this->terbilang($num/1000) . " RIBU" . $_this->terbilang($num % 1000);
+        } else if ($num <1000000000) {
+            $temp = $_this->terbilang($num/1000000) . " JUTA" . $_this->terbilang($num % 1000000);
+        } else if ($num <1000000000000) {
+            $temp = $_this->terbilang($num/1000000000) . " MILYAR" . $_this->terbilang(fmod($num,1000000000));
+        } else if ($num <1000000000000000) {
+            $temp = $_this->terbilang($num/1000000000000) . " TRILYUN" . $_this->terbilang(fmod($x,1000000000000));
         }     
             return $temp;
     }
 
+    /**
+    * Format timestamp without timestamp date into
+    * dd mm yyyy with month name using indonesian lang
+    *
+    * @param $tanggal
+    * @return indonesian date with format dd mm yyyy
+    */
     public static function tglIndo($tanggal){
         if($tanggal != null){
             $bulan = array (
@@ -202,6 +213,12 @@ class Helper
         }
     }
 
+    /**
+    * Convert byte of file into more readable format
+    *
+    * @param $byte byte number
+    * @return byte / kb / mb  / etc
+    */
     public static function bytesToHuman($bytes)
     {
         $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
@@ -212,4 +229,5 @@ class Helper
 
         return round($bytes, 2) . ' ' . $units[$i];
     }
+    
 }

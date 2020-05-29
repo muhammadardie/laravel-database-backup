@@ -4,18 +4,18 @@ namespace App\Http\Controllers\UserManagement;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\UserService;
+use App\Repositories\UserRepository;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\EditPasswordRequest;
 use App\Http\Requests\EditProfileRequest;
 
 class UserController extends Controller
 {
-    protected $userService;
+    protected $userRepository;
     
-    public function __construct(UserService $userService)
+    public function __construct(UserRepository $userRepository)
     {
-        $this->userService = $userService;
+        $this->userRepository = $userRepository;
     }
     
     /**
@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $roleOpt = $this->userService->getModel()->roleOption();
+        $roleOpt = $this->userRepository->getModel()->roleOption();
 
         return view ('user_management.user_index', compact('roleOpt'));
     }
@@ -38,7 +38,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $store = $this->userService->storeUser($request);
+        $store = $this->userRepository->storeUser($request);
         
         return response()->json(['status' => $store]);
     }
@@ -51,7 +51,7 @@ class UserController extends Controller
      */
     public function show($userId)
     {
-        $user = $this->userService->show($userId);
+        $user = $this->userRepository->show($userId);
 
         return response()->json($user);
     }
@@ -65,7 +65,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $userId)
     {
-        $update = $this->userService->updateUser($request, $userId);
+        $update = $this->userRepository->updateUser($request, $userId);
 
         return response()->json(['status' => $update]);
     }
@@ -79,7 +79,7 @@ class UserController extends Controller
      */
     public function changePassword(EditPasswordRequest $request, $userId)
     {
-        $update = $this->userService->updateUser($request, $userId);
+        $update = $this->userRepository->updateUser($request, $userId);
 
         return response()->json(['status' => $update]);
     }
@@ -93,7 +93,7 @@ class UserController extends Controller
      */
     public function changeProfile(EditProfileRequest $request, $userId)
     {
-        $update = $this->userService->updateUser($request, $userId);
+        $update = $this->userRepository->updateUser($request, $userId);
 
         return response()->json(['status' => $update]);
     }
@@ -106,9 +106,7 @@ class UserController extends Controller
      */
     public function destroy($userId)
     {
-       $deleteImage = $this->userService->deleteFiles('user', $this->userService->show($userId)->photo);
-
-       return $this->userService->delete($userId);
+       return $this->userRepository->deleteUser($userId);
     }
 
     /**
@@ -118,6 +116,6 @@ class UserController extends Controller
     */
     public function ajaxDatatable(Request $request)
     {
-        return $this->userService->makeDatatableUser($request);
+        return $this->userRepository->datatableUser($request);
     }
 }

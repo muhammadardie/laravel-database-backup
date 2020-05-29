@@ -4,22 +4,22 @@ namespace App\Http\Controllers\Database;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\BackupService;
-use App\Services\SourceService;
-use App\Services\DiskService;
+use App\Repositories\BackupRepository;
+use App\Repositories\SourceRepository;
+use App\Repositories\DiskRepository;
 use App\Http\Requests\BackupRequest;
 
 class BackupController extends Controller
 {
-    protected $backupService;
-    protected $diskService;
-    protected $sourceService;
+    protected $backupRepository;
+    protected $diskRepository;
+    protected $sourceRepository;
 
-    public function __construct(BackupService $backupService, SourceService $sourceService, DiskService $diskService)
+    public function __construct(BackupRepository $backupRepository, SourceRepository $sourceRepository, DiskRepository $diskRepository)
     {
-        $this->backupService = $backupService;
-        $this->diskService   = $diskService;
-        $this->sourceService = $sourceService;
+        $this->backupRepository = $backupRepository;
+        $this->diskRepository   = $diskRepository;
+        $this->sourceRepository = $sourceRepository;
     }
     
     /**
@@ -29,8 +29,8 @@ class BackupController extends Controller
      */
     public function index()
     {
-        $sources = $this->sourceService->makeDropdown();
-        $disks   = $this->diskService->makeDropdown();
+        $sources = $this->sourceRepository->makeDropdown();
+        $disks   = $this->diskRepository->makeDropdown();
 
         return view ('database.backup_index', compact('sources', 'disks'));
     }
@@ -43,7 +43,7 @@ class BackupController extends Controller
      */
     public function show($backupId)
     {
-        $backup = $this->backupService->detailBackup($backupId);
+        $backup = $this->backupRepository->detailBackup($backupId);
 
         return response()->json($backup);
     }
@@ -56,7 +56,7 @@ class BackupController extends Controller
      */
     public function download($backupId)
     {
-        return $this->backupService->downloadBackup($backupId);
+        return $this->backupRepository->downloadBackup($backupId);
     }
 
     /**
@@ -67,17 +67,7 @@ class BackupController extends Controller
      */
     public function destroy($backupId)
     {
-       return $this->backupService->deleteBackup($backupId);
-    }
-
-    /**
-    * Showing list backup by datatable
-    * @param $request ajax
-    * @return json
-    */
-    public function ajaxDatatable(Request $request)
-    {
-        return $this->backupService->makeDatatableBackup($request);
+       return $this->backupRepository->deleteBackup($backupId);
     }
 
     /**
@@ -87,16 +77,26 @@ class BackupController extends Controller
     */
     public function getDatabaseList(Request $request)
     {
-        $databases = $this->sourceService->getDatabaseList($request->id); // by source id
+        $databases = $this->sourceRepository->getDatabaseList($request->id); // by source id
 
         return response()->json($databases);
     }
 
     public function createBackup(BackupRequest $request)
     {
-        $status = $this->backupService->createBackup($request); // by source id
+        $status = $this->backupRepository->createBackup($request); // by source id
 
         return response()->json(['status' => $status]);
+    }
+    
+    /**
+    * Showing list backup by datatable
+    * @param $request ajax
+    * @return json
+    */
+    public function ajaxDatatable(Request $request)
+    {
+        return $this->backupRepository->datatableBackup($request);
     }
 
 }

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Repositories;
 
 use App\Models\User;
+use App\Services\{ DatatableService, StorageService };
 
-class UserService extends BaseService
+class UserRepository extends BaseRepository
 {
     public function __construct(User $user)
     {
@@ -25,7 +26,7 @@ class UserService extends BaseService
                             'name'  => "USER",
                         ],
                     );
-            $upload   = $this->uploadFiles($store,$files);
+            $upload   = $this->upload($store,$files);
 
             return $upload;
         } else {
@@ -37,13 +38,17 @@ class UserService extends BaseService
     {
         $callback  = true;
         $oldName   = $this->show($userId)->photo;
+
         unset($request['password_confirmation']);
+        
         if($request['password'] == ''){
             unset($request['password']);
         } else {
             $request['password'] = bcrypt($request['password']);
         }
+
         $update    = $this->update($request->except(['photo', 'password_confirmation']), $userId, $callback);
+
         if($update){
             $files    = array(
                         [
@@ -53,16 +58,25 @@ class UserService extends BaseService
                             'name'  => "USER",
                         ],
                     );
-            $upload   = $this->uploadFiles($update,$files, $oldName);
+
+            $upload = $this->upload($update, $files, $oldName);
 
             return $upload;
         }
     }
 
-    public function makeDatatableUser($request)
+    public function deleteUSer($userId)
+    {
+        $fileName    = $this->show($userId)->photo;
+        $deleteImage = StorageService::deleteFile('user/' . $fileName);
+
+        return $this->delete($userId);
+    }
+
+    public function datatableUser($request)
     {
         if($request->ajax()){
-            $sql_no_urut = \Yajra_datatable::get_no_urut('users.id', $request);
+            $sql_no_urut = DatatableService::getRowNum('users.id', $request);
             $user  = $this->model
                           ->select([
                             \DB::raw($sql_no_urut),
@@ -78,7 +92,7 @@ class UserService extends BaseService
                                                     class="btn btn-action cur-p btn-outline-primary btn-show-datatable" title="Detail">
                                                     <span class="fa fa-search"></span></a>&nbsp;&nbsp;';
 
-                                if ($user->role === 'User') {
+                                if ($user->role === 'User' && $user->id !== \Auth::user()->id) {
                                     $btn_action .= '<a data-href="'. route('user.show', $user->id) .'"
                                                     class="btn btn-action cur-p btn-outline-primary btn-edit-datatable" title="Change">
                                                     <span class="fa fa-edit"></span></a>&nbsp;&nbsp;';

@@ -3,6 +3,12 @@
 <!-- begin:: Content -->
 <div class="content">
    <div class="page-inner">
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+      Disk configuration using <strong>sftp</strong> and <strong>local</strong> driver. For <strong>local</strong> driver use <strong>localhost</strong> for host field
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
       <div class="page-header">
          <ul class="breadcrumbs">
             <li class="nav-home">
