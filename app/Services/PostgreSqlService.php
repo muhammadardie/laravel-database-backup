@@ -24,7 +24,9 @@ class PostgreSqlService extends BaseService
         $command = self::pgdump() . ' -d ' .  $params['db_name'] . ' -h ' . $params['host'] . ' -p ' . $params['port'] . ' -U ' . $params['username'] . ' -F custom > ' . $params['output_file'];
         putenv("PGPASSWORD=" . $params['password']);
         
-        return self::executeCommand($command);
+        exec($command, $output, $status);
+        
+        return $status === 0; // execute backup is successful only if the $status === 0
     }
 
     /**
@@ -39,15 +41,20 @@ class PostgreSqlService extends BaseService
         $output  = self::executeCommand($command);
         
         $arrayDB = [];
-        foreach ($output as $key => $value) {
-            $dbName = strtok($value, '|');
 
-            if($dbName !== "postgres" AND $dbName !== "template0" AND $dbName !== "template1" AND $dbName !== "postgres=CTc/postgres") {
-                $arrayDB[$dbName] = $dbName;    
-            }
-            
-        } 
-        // return $arrayDB;
+        exec($command, $output, $status);
+        
+        if(is_array($output) && !empty($output)) {
+            foreach ($output as $key => $value) {
+                $dbName = strtok($value, '|');
+
+                if($dbName !== "postgres" AND $dbName !== "template0" AND $dbName !== "template1" AND $dbName !== "postgres=CTc/postgres") {
+                    $arrayDB[$dbName] = $dbName;    
+                }
+                
+            } 
+        }
+
         return !empty($arrayDB) ? $arrayDB : false;
     }
 }

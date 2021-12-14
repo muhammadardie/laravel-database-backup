@@ -75,23 +75,42 @@ class StorageService
     }
 
     /**
+    * check file exists in storage disk
+    * @param $fileName file name stored backup file
+    * @return status store (success -> array file name stored, failed -> null)
+    */
+    public static function checkStorage($fileName)
+    {
+        return Storage::disk(self::customFilesystem())->exists($fileName);
+    }
+
+    /**
     * Store backup file to disk and delete backup file in public dir
     * @param $fileName file name stored backup file
     * @return status store (success -> array file name stored, failed -> null)
     */
     public static function storeBackup($filesystem, $fileName)
     {
-        self::setFilesystem($filesystem);
+        try {
+            
+            self::setFilesystem($filesystem);
 
-        $store = Storage::disk(self::customFilesystem())
-                         ->putFileAs('database-backup', // default directory name
+            $store = Storage::disk(self::customFilesystem())
+                         ->putFileAs('',
                             new File(public_path($fileName)), 
                             $fileName
                           );
-        // delete file after stored in disk
-        unlink(public_path($fileName));
 
-        return $store;
+            // delete file after stored in disk
+            unlink(public_path($fileName));
+
+        } catch (\Exception $e) {
+
+            // error message
+            return $e->getMessage();
+        }
+
+        return self::checkStorage($fileName);
     }
 
     /**

@@ -108,30 +108,27 @@
                processData: false,
                contentType: false                    // Using FormData, no need to process data.
             }).done(function(res){
+              if(typeof res.status === 'string') {
+                unblockPage()
+                var notification = alertify.message(
+                  `<span class="fas fas fa-times"> </span> &nbsp; ${res.status}`,
+                  5,
+                );
+
+                return;
+              }
+
                successAjax('modal-create-backup', 'saved', res) // (close modal by modal id, message, response)
+      
             }).fail(function(err){
-               errorAjax(err, 'saved')
+               errorAjax(err, err)
             });
         }
   });
 
   function defaultName(databaseName) {
-    let now = formatDate(new Date())
-
-    return `${databaseName}-${now}.backup`;
-  }
-
-  function formatDate(date) {
-      var d = new Date(date),
-          month = '' + (d.getMonth() + 1),
-          day = '' + d.getDate(),
-          year = d.getFullYear();
-
-      if (month.length < 2) 
-          month = '0' + month;
-      if (day.length < 2) 
-          day = '0' + day;
-
-      return [year, month, day].join('-');
+    let now = @json(date('d-m-Y--H-i-s'));
+    
+    return `${databaseName}--${now}.backup`;
   }
 </script>

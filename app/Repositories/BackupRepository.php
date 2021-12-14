@@ -36,9 +36,12 @@ class BackupRepository extends BaseRepository
             'output_file' => $request->name
         ]);
 
+        if($backupDatabase != TRUE) return 'Failed to backup database from source';
+
         // store to disk (sftp) and delete file in temporary directory
         $storeBackup = StorageService::storeBackup($disk, $request->name);
-        
+        if(is_string($storeBackup)) return $storeBackup; // failed to store file
+
         // store record
         $request['user_created'] = \Auth::user()->id;
         $store                   = $this->store($request->all());
@@ -56,7 +59,7 @@ class BackupRepository extends BaseRepository
         $backup   = $this->show($backupId);
         $source   = $this->sourceRepository->show($backup->source_id);
         $disk     = $this->diskRepository->show($backup->disk_id);
-        $fileName = 'database-backup/' . $backup->name;
+        $fileName = $backup->name;
         
         // if create backup using custom path then using $backup->path
         if($backup->path) {
@@ -93,7 +96,7 @@ class BackupRepository extends BaseRepository
     {
         $backup   = $this->show($backupId);
         $disk     = $this->diskRepository->show($backup->disk_id);
-        $fileName = 'database-backup/' . $backup->name;
+        $fileName = $backup->name;
 
         return StorageService::downloadFile($fileName, $disk);
     }
@@ -107,7 +110,7 @@ class BackupRepository extends BaseRepository
     {
         $backup   = $this->show($backupId);
         $disk     = $this->diskRepository->show($backup->disk_id);
-        $fileName = 'database-backup/' . $backup->name;
+        $fileName = $backup->name;
         $delete   = StorageService::deleteFile($fileName, $disk);
          
         return $this->delete($backupId);
