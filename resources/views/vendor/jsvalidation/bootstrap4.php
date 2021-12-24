@@ -12,9 +12,14 @@
                         error.insertAfter(element.parent());
                         // else just place the validation message immediately after the input
                     } else if(element.attr('data-select2-id') !== typeof undefined && element.next('.select2-container').length) {
-                        error.insertAfter(element.next('.select2-container'));
+                        element.next('.select2-container').find('.select2-selection').css({"border":"1px solid #F64E60"})
+                        element.next('.select2-container').append(error);
                     } else {
                         error.insertAfter(element);
+                        if(element.parent().hasClass('row'))
+                        {
+                         error.css("margin-left","20%")
+                        }
                     }
                 },
                 highlight: function (element) {
@@ -28,7 +33,13 @@
 
                 
                 unhighlight: function(element) {
-                    $(element).closest('.form-control').removeClass('is-invalid').addClass('is-valid');
+                    $el = $(element);
+                    
+                    if($el.attr('data-select2-id') !== typeof undefined && $el.next('.select2-container').length) {
+                        $el.next('.select2-container').find('.select2-selection').css({"border":"1px solid #2f374b"})
+                    } else {
+                        $(element).closest('.form-control').removeClass('is-invalid').addClass('is-valid');
+                    }
                 },
                 
                 success: function (element) {

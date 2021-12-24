@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class PostgreSqlService extends BaseService
+class PostgreSqlService
 {
     public static function pgdump()
     {
@@ -21,7 +21,8 @@ class PostgreSqlService extends BaseService
     */
     public static function backup($params)
     {
-        $command = self::pgdump() . ' -d ' .  $params['db_name'] . ' -h ' . $params['host'] . ' -p ' . $params['port'] . ' -U ' . $params['username'] . ' -F custom > ' . $params['output_file'];
+        $outputPath = public_path($params['output_file']);
+        $command = self::pgdump() . ' -d ' .  $params['db_name'] . ' -h ' . $params['host'] . ' -p ' . $params['port'] . ' -U ' . $params['username'] . ' -F custom > ' . $outputPath;
         putenv("PGPASSWORD=" . $params['password']);
         
         exec($command, $output, $status);
@@ -38,10 +39,9 @@ class PostgreSqlService extends BaseService
     {
         $command = self::psql() . ' -h ' .  $params['host'] . ' -p ' . $params['port'] . ' -U ' . $params['username'] . ' -l -A -t';
         putenv("PGPASSWORD=" . $params['password']);
-        $output  = self::executeCommand($command);
         
         $arrayDB = [];
-
+        
         exec($command, $output, $status);
         
         if(is_array($output) && !empty($output)) {

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBackupHistoriesTable extends Migration
+class CreateSchedulerTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateBackupHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('backup_histories', function (Blueprint $table) {
+        Schema::create('scheduler', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->integer('database_source_id');
             $table->integer('storage_id');
-            $table->integer('scheduler_id')->nullable();
+            $table->json('database');
+            $table->boolean('running');
+            $table->string('remark')->nullable();
             $table->integer('user_created');
-            $table->string('filename');
-            $table->string('database');
-            $table->enum('backup_type', ['manual', 'automatic']);
             $table->timestamps();
 
             // database_source_id foreign tbl:source 
@@ -33,16 +33,6 @@ class CreateBackupHistoriesTable extends Migration
             $table->foreign('storage_id')
                   ->references('id')
                   ->on('storage');
-
-            // scheduler_id foreign tbl:scheduler 
-            $table->foreign('scheduler_id')
-                  ->references('id')
-                  ->on('scheduler');
-
-            // user_created foreign tbl:users 
-            $table->foreign('user_created')
-                  ->references('id')
-                  ->on('users');
         });
     }
 
@@ -53,6 +43,6 @@ class CreateBackupHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('backup_histories');
+        Schema::dropIfExists('scheduler');
     }
 }

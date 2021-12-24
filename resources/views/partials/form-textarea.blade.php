@@ -12,15 +12,14 @@
 	</style>
 @endif
 
-<div class="form-group {{ isset($formClass) ? $formClass : '' }}">
-	<label for="{{ $name }}">
-		{!! isset($required) && $required === true ? '<span style="color:red" title="Wajib diisi">*</span> ' : '' !!}
-		{{ $title }}
-	</label>
-	@if(isset($labelIcon) && $labelIcon === true)
-        <img class="label-flag" src="{{ asset('images/indonesia.svg')}}" alt="indonesia">
-    @endif
-	<textarea class="form-control {{ isset($inputClass) ? $inputClass : '' }}"
+<div class="form-group {{ isset($multiColumn) && $multiColumn ? 'col-md-6' : 'row' }}">
+	<label for="{{ $name }}" class="{{ isset($multiColumn) && $multiColumn ? '' : 'single-label' }}">
+        @if( isset($required) && $required === true )
+            <span style="color:red">*</span>
+        @endif
+        {{ $title }}
+    </label>
+	<textarea class="form-control {{ isset($multiColumn) && $multiColumn ? 'col-md-12' : 'single-input' }}"
 		name="{{ $name }}"
 		{{ (isset($attribute) ? is_array($attribute) : false) ? implode(' ',$attribute) : ''}}
 		rows="3" required="required">{{ old($name, isset($value) ? $value : '') }}</textarea>

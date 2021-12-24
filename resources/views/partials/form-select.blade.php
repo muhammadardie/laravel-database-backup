@@ -9,7 +9,7 @@
     <select 
       name="{{ $name }}" 
       class="form-control {{ isset($multiColumn) && $multiColumn ? 'col-md-12' : 'single-input' }}"
-      @if( isset($nultiple) && $nultiple === true ) 
+      @if( isset($multiple) && $multiple === true ) 
         multiple="multiple"
       @endif
     >

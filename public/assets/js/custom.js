@@ -83,6 +83,16 @@ function errorAjax(error, msg) {
     );
 }
 
+// default error when save/update failed
+function failedAjax(error, msg) {
+    console.log(error)
+    unblockPage()
+    var notification = alertify.message(
+      '<span class="fas fas fa-times"> </span> &nbsp; '+ msg,
+      5,
+    );
+}
+
 // default when save/update success
 function successAjax(modal, msg, response) {
     if(response.status === true) {

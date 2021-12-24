@@ -3,27 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Repositories\BackupRepository;
-use App\Repositories\SourceRepository;
-use App\Repositories\DiskRepository;
+use App\Repositories\{ BackupHistoryRepository, DatabaseSourceRepository, StorageRepository };
 
 class HomeController extends Controller
 {
 
-    protected $backupRepository;
-    protected $sourceRepository;
-    protected $diskRepository;
+    protected $history;
+    protected $source;
+    protected $storage;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(BackupRepository $backupRepository, SourceRepository $sourceRepository, DiskRepository $diskRepository)
+    public function __construct(BackupHistoryRepository $history, DatabaseSourceRepository $source, StorageRepository $storage)
     {
-        $this->backupRepository = $backupRepository;
-        $this->sourceRepository = $sourceRepository;
-        $this->diskRepository   = $diskRepository;
+        $this->history = $history;
+        $this->source = $source;
+        $this->storage   = $storage;
     }
 
     /**
@@ -33,9 +31,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $countSource = $this->sourceRepository->getModel()->count();
-        $countDisk   = $this->diskRepository->getModel()->count();
-        $countBackup = $this->backupRepository->getModel()->count();
+        $countSource = $this->source->count();
+        $countDisk   = $this->storage->count();
+        $countBackup = $this->history->count();
 
         return view('home', compact('countBackup', 'countDisk', 'countSource'));
     }

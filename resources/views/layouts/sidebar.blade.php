@@ -48,7 +48,7 @@
                 </div>
             </div>
             <ul class="nav nav-primary">
-                <li class="nav-item">
+                <li class="nav-item {{ in_array('home', $url) ? 'active' : '' }}">
                     <a href="{{ route('home') }}">
                         <i class="fas fa-home"></i>
                         <p>Dashboard</p>
@@ -77,16 +77,21 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a data-toggle="collapse" href="#filesystem">
-                        <i class="fas fa-folder"></i>
-                        <p>Filesystem</p>
+                    <a data-toggle="collapse" href="#master-data">
+                        <i class="fas fa-server"></i>
+                        <p>Master Data</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse {{ in_array('filesystem', $url) ? 'show' : '' }}" id="filesystem">
+                    <div class="collapse {{ in_array('master-data', $url) ? 'show' : '' }}" id="master-data">
                         <ul class="nav nav-collapse">
-                            <li class="{{ in_array('disk', $url) ? 'active' : '' }}">
-                                <a href="{{ route('disk.index') }}">
-                                    <span class="sub-item">Disk</span>
+                            <li class="{{ in_array('storage', $url) ? 'active' : '' }}">
+                                <a href="{{ route('storage.index') }}">
+                                    <span class="sub-item">Storage</span>
+                                </a>
+                            </li>
+                            <li class="{{ in_array('database-source', $url) ? 'active' : '' }}">
+                                <a href="{{ route('database-source.index') }}">
+                                    <span class="sub-item">Database Source</span>
                                 </a>
                             </li>
                         </ul>
@@ -95,19 +100,19 @@
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#database">
                         <i class="fas fa-database"></i>
-                        <p>Database</p>
+                        <p>Database Backup</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse {{ in_array('database', $url) ? 'show' : '' }}" id="database">
                         <ul class="nav nav-collapse">
-                            <li class="{{ in_array('source', $url) ? 'active' : '' }}">
-                                <a href="{{ route('source.index') }}">
-                                    <span class="sub-item">Source</span>
+                            <li class="{{ in_array('scheduler', $url) ? 'active' : '' }}">
+                                <a href="{{ route('scheduler.index') }}">
+                                    <span class="sub-item">Scheduler</span>
                                 </a>
                             </li>
-                            <li class="{{ in_array('backup', $url) ? 'active' : '' }}">
-                                <a href="{{ route('backup.index') }}">
-                                    <span class="sub-item">Backup</span>
+                            <li class="{{ in_array('histories', $url) ? 'active' : '' }}">
+                                <a href="{{ route('histories.index') }}">
+                                    <span class="sub-item">Histories</span>
                                 </a>
                             </li>
                         </ul>

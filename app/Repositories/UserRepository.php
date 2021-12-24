@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\User;
-use App\Services\{ DatatableService, StorageService };
 
 class UserRepository extends BaseRepository
 {
@@ -68,7 +67,7 @@ class UserRepository extends BaseRepository
     public function deleteUSer($userId)
     {
         $fileName    = $this->show($userId)->photo;
-        $deleteImage = StorageService::deleteFile('user/' . $fileName);
+        $deleteImage = $this->deleteFile('user/' . $fileName);
 
         return $this->delete($userId);
     }
@@ -76,7 +75,7 @@ class UserRepository extends BaseRepository
     public function datatableUser($request)
     {
         if($request->ajax()){
-            $sql_no_urut = DatatableService::getRowNum('users.id', $request);
+            $sql_no_urut = $this->getRowNum('users.id', $request);
             $user  = $this->model
                           ->select([
                             \DB::raw($sql_no_urut),
@@ -88,17 +87,14 @@ class UserRepository extends BaseRepository
 
             return \DataTables::of($user)
                             ->addColumn('action', function ($user) {
-                                $btn_action = '<a data-href="'. route('user.show', $user->id) .'"
-                                                    class="btn btn-action cur-p btn-outline-primary btn-show-datatable" title="Detail">
-                                                    <span class="fa fa-search"></span></a>&nbsp;&nbsp;';
+                                $btn_action = '<a data-href="'. route('user.show', $user->id) .'" class="btn btn-action cur-p btn-outline-primary btn-show-datatable" title="Detail"><span class="fa fa-search"></span></a>&nbsp;&nbsp;';
 
                                 if ($user->role === 'User' && $user->id !== \Auth::user()->id) {
                                     $btn_action .= '<a data-href="'. route('user.show', $user->id) .'"
                                                     class="btn btn-action cur-p btn-outline-primary btn-edit-datatable" title="Change">
                                                     <span class="fa fa-edit"></span></a>&nbsp;&nbsp;';
 
-                                    $btn_action .= '<a data-href="'. route('user.show', $user->id) .'"
-                                                    class="btn btn-action cur-p btn-outline-primary btn-delete-datatable" title="Delete">
+                                    $btn_action .= '<a data-href="'. route('user.show', $user->id) .'" class="btn btn-action cur-p btn-outline-primary btn-delete-datatable" title="Delete">
                                                     <span class="fa fa-trash"></span></a>';
                                 }
 

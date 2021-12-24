@@ -15,8 +15,12 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('/', function() {
+    return redirect('login');
+});
+
 Route::group(['middleware' => ['auth', 'web']], function () {
-	Route::get('/', 'HomeController@index')->name('home');
+	Route::get('/home', 'HomeController@index')->name('home');
 
 	/* user management */
 	Route::prefix('user-management')->group(function () {
@@ -26,28 +30,26 @@ Route::group(['middleware' => ['auth', 'web']], function () {
 		Route::resource('user', 'UserManagement\UserController', ['names' => 'user']);
 	});
 
-	/* Filesystem */
-	Route::prefix('filesystem')->group(function () {
-		Route::get('/disk/ajaxDatatable', 'Filesystem\DiskController@ajaxDatatable')->name('disk.ajaxDatatable');
-		Route::resource('disk', 'Filesystem\DiskController', ['names' => 'disk']);
+	/* Master Data */
+	Route::prefix('master-data')->group(function () {
+		Route::get('/storage/ajaxDatatable', 'MasterData\StorageController@ajaxDatatable')->name('storage.ajaxDatatable');
+		Route::resource('storage', 'MasterData\StorageController', ['names' => 'storage']);
+
+		Route::get('/database-source/ajaxDatatable', 'MasterData\DatabaseSourceController@ajaxDatatable')->name('database-source.ajaxDatatable');
+		Route::resource('database-source', 'MasterData\DatabaseSourceController', ['names' => 'database-source']);
 	});
 
 	/* Database */
 	Route::prefix('database')->group(function () {
-		Route::get('/source/ajaxDatatable', 'Database\SourceController@ajaxDatatable')->name('source.ajaxDatatable');
-		Route::resource('source', 'Database\SourceController', ['names' => 'source']);
+		Route::get('/histories/ajaxDatatable', 'Database\BackupHistoryController@ajaxDatatable')->name('histories.ajaxDatatable');
+		Route::get('/histories/getDatabaseList', 'Database\BackupHistoryController@getDatabaseList')->name('histories.getDatabaseList');
+		Route::get('/histories/download/{id}', 'Database\BackupHistoryController@download')->name('histories.download');
+		Route::resource('histories', 'Database\BackupHistoryController', ['names' => 'histories']);
 
-		Route::get('/backup', 'Database\BackupController@index')->name('backup.index');
-		Route::get('/backup/ajaxDatatable', 'Database\BackupController@ajaxDatatable')->name('backup.ajaxDatatable');
-		Route::get('/backup/getDatabaseList', 'Database\BackupController@getDatabaseList')->name('backup.getDatabaseList');
-		Route::get('/backup/show/{id}', 'Database\BackupController@show')->name('backup.show');
-		Route::get('/backup/download/{id}', 'Database\BackupController@download')->name('backup.download');
-		Route::delete('/backup/destroy/{id}', 'Database\BackupController@destroy')->name('backup.destroy');
-		Route::post('/backup/createBackup', 'Database\BackupController@createBackup')->name('backup.createBackup');
+		Route::get('/scheduler/ajaxDatatable', 'Database\SchedulerController@ajaxDatatable')->name('scheduler.ajaxDatatable');
+		Route::get('/scheduler/getDatabaseList', 'Database\SchedulerController@getDatabaseList')->name('scheduler.getDatabaseList');
+		Route::resource('scheduler', 'Database\SchedulerController', ['names' => 'scheduler']);
 	});
 
 	
 });
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
