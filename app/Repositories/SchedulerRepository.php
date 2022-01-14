@@ -20,6 +20,19 @@ class SchedulerRepository extends BaseRepository
         return [1 => 'Running', 0 => 'Stop'];
     }
 
+    public function availablePruneDays()
+    {
+        return [
+            1 => '1 day',
+            2 => '2 day',
+            3 => '3 day',
+            4 => '4 day',
+            5 => '5 day',
+            6 => '6 day',
+            7 => '7 day',
+        ];
+    }
+
     public function datatableScheduler($request)
     {
         if($request->ajax()){

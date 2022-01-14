@@ -30,8 +30,9 @@ class SchedulerController extends Controller
         $dbSources = $this->dbSource->makeDropdown();
         $storage = $this->storage->makeDropdown();
         $statusScheduler = $this->scheduler->statusScheduler();
+        $availablePruneDays = $this->scheduler->availablePruneDays();
 
-        return view ('database.scheduler.index', compact('dbSources', 'storage', 'statusScheduler'));
+        return view ('database.scheduler.index', compact('dbSources', 'storage', 'statusScheduler', 'availablePruneDays'));
     }
 
     /**

@@ -54,14 +54,39 @@ class DailyBackupDb extends Command
 
             foreach($schedules as $schedule) 
             {
-                $this->info('Schedule '. $schedule->name .' starting at  '. date('d-m-Y H:i:s'));
+                $this->info('Schedule "'. $schedule->name .'" starting at  '. date('d-m-Y H:i:s'));
 
-                $source    = $this->dbSource->show($schedule->database_source_id);
-                $databases = json_decode($schedule->database);
+                $autoPruneDay = $schedule->auto_prune_day;
+                $source       = $this->dbSource->show($schedule->database_source_id);
+                $databases    = json_decode($schedule->database);
 
                 foreach($databases as $database)
                 {
-                    $this->info('Starting backup database '. $database);
+                    // delete all database backup below "auto_prune_day"
+                    if($autoPruneDay)
+                    {
+                        $this->info('Auto Prune day set for "'. $autoPruneDay .' day"');
+                        
+                        $backupWillPruned = $this->backupRepo
+                                                 ->where('database', $database)
+                                                 ->whereDate('created_at', '<=', \Carbon\Carbon::now()->subDays($autoPruneDay))
+                                                 ->get();
+                        if(count($backupWillPruned) > 0)
+                        {
+                            $this->info('Starting Pruning backup database "'. $database .'" which more than '. $autoPruneDay .' day old');
+                            foreach($backupWillPruned as $prune)
+                            {
+                                $deleted = $this->backupRepo->deleteBackup($prune->id);
+                                if($deleted) $this->info($prune->filename .' has been deleted');
+                            }
+                        }
+                        else
+                        {
+                            $this->info('No database "'. $database .'" backup found more than '. $autoPruneDay .' day old');
+                        }
+                    }
+
+                    $this->info('Starting backup database "'. $database .'"');
 
                     $fileName = $database.'--'.date('d-m-Y--H-i-s').'.backup';
                     $source->database = $database;
@@ -72,19 +97,24 @@ class DailyBackupDb extends Command
 
                     $resBackup = $this->backupRepo->backupDatabase($source);
 
+                    $this->info('Backup database "'. $database .'" Finished');
+
                     if($resBackup != TRUE) {
                         $this->info('Failed to backup database from source');
                         $this->info('Scheduler stopped running at '. date('d-m-Y H:i:s'));
                         return;
                     }
 
+                    $this->info('Store backup file database "'. $database .'" to '. $storage->host);
                     // store to storage (sftp) and delete file in temporary directory (Traits/StorageTrait->storeBackupFile())
                     $storeBackup = $this->storage->storeBackupFile($storage, $fileName);
                     if(is_string($storeBackup)) {
                         $this->info('Failed to store backup file to storage');
+                        $this->info('ERROR: '. $storeBackup);
                         $this->info('Scheduler stopped running at '. date('d-m-Y H:i:s'));
                         return;
                     }
+                    $this->info('Backup file database "'. $database .'" has been stored at '. $storage->host .' with path '. $storage->path .'/'. $fileName);
 
                     // store record to backup history
                     $data['database_source_id'] = $schedule->database_source_id;
@@ -98,7 +128,7 @@ class DailyBackupDb extends Command
                     $store = $this->backupRepo->store($data);
                 }
 
-                $this->info('Schedule '. $schedule->name .'running Successfully.');
+                $this->info('Schedule "'. $schedule->name .'" running Successfully.');
             }
 
             DB::commit();

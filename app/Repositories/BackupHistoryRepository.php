@@ -124,10 +124,11 @@ class BackupHistoryRepository extends BaseRepository
     */
     public function deleteBackup($backupId)
     {
-        $backup   = $this->show($backupId);
-        $storage  = $this->storage->show($backup->storage_id);
-        $fileName = $backup->name;
-        $delete   = $this->deleteFile($fileName, $storage);
+        $backup            = $this->show($backupId);
+        $storage           = $this->storage->show($backup->storage_id);
+        $storage->password = $storage->hashedPassword;
+        $fileName          = $backup->name;
+        $delete            = $this->deleteFile($fileName, $storage);
          
         return $this->delete($backupId);
     }

@@ -39,6 +39,11 @@
               'multiple'    => true
             ])
             @include('partials.form-select', [
+              'title'       => __('Prune Days'),
+              'name'        => 'auto_prune_day',
+              'data'        => $availablePruneDays
+            ])
+            @include('partials.form-select', [
               'title'    => __('Status'),
               'name'     => 'running',
               'data'     => $statusScheduler,
@@ -67,6 +72,11 @@
     placeholder: "-- Select Database --", 
     width: "50%"
   });
+
+  // append question mark to auto prune day label
+  const pruneDaysDesc = `<i class="prune-day-question fas fa-question" data-toggle="tooltip" data-placement="top" title="Example: if we set prune day to '7 day' then scheduler will auto prune/delete old backup database and history in schedule after 7 days passed so database backup will keep remain 7 days only"></i>`;
+
+  $("select[name=auto_prune_day]").prev().append(pruneDaysDesc)
 
   $('#form-create-scheduler').on('submit', function(e) {
         e.preventDefault();

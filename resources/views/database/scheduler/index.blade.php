@@ -27,6 +27,16 @@
     .alert-cron {
        background-color: #101520;
     }
+    .prune-day-question {
+        background-color: white;
+        color: #202940;
+        padding: 5px;
+        border-radius: 16px;
+        width: 18px;
+        height: 19px;
+        font-size: 10px;
+        margin-left: 5px;
+    }
 </style>
 <!-- begin:: Content -->
 <div class="content">

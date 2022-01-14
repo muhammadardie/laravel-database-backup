@@ -45,6 +45,11 @@
               'data'     => $statusScheduler,
               'required' => true
             ])
+            @include('partials.form-select', [
+              'title'       => __('Prune Days'),
+              'name'        => 'auto_prune_day',
+              'data'        => $availablePruneDays
+            ])
             @include('partials.form-textarea', [
               'title'    => __('Remark'),
               'name'     => 'remark'
@@ -96,6 +101,7 @@ $('body').on('click', '.btn-edit-datatable', function(e) {
 
           $('#form-edit-schedule select[name=database\\[\\]]').val(database).trigger('change');
           $('#form-edit-schedule select[name=running]').val(status).trigger('change');
+          $('#form-edit-schedule select[name=auto_prune_day]').val(res.auto_prune_day).trigger('change');
           $('#form-edit-schedule textarea[name=remark]').val(res.remark)
           unblockPage()
           $('#modal-edit-schedule').modal('toggle');

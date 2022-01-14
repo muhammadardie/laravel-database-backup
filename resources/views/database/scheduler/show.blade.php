@@ -36,6 +36,12 @@
               'attribute'   => ['disabled']
             ])
             @include('partials.form-input', [
+              'title'     => __('Prune Days'),
+              'type'        => 'text',
+              'name'      => 'auto_prune_day',
+              'attribute' => ['disabled']
+            ])
+            @include('partials.form-input', [
               'title'     => __('Status'),
               'type'        => 'text',
               'name'      => 'running',
@@ -76,6 +82,7 @@
           $('#form-detail-schedule input[name=database_source_id]').val(res.sourceName)
           $('#form-detail-schedule input[name=database]').val(res.listDatabase)
           $('#form-detail-schedule input[name=running]').val(res.status)
+          $('#form-detail-schedule input[name=auto_prune_day]').val(res.auto_prune_day + " day")
           $('#form-detail-schedule textarea[name=remark]').val(res.remark)
           $('#modal-detail-schedule').modal('toggle');
         },
