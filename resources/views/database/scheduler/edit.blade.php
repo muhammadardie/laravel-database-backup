@@ -40,15 +40,15 @@
               'multiple'    => true
             ])
             @include('partials.form-select', [
+              'title'       => __('Prune Days'),
+              'name'        => 'auto_prune_day',
+              'data'        => $availablePruneDays
+            ])
+            @include('partials.form-select', [
               'title'    => __('Status'),
               'name'     => 'running',
               'data'     => $statusScheduler,
               'required' => true
-            ])
-            @include('partials.form-select', [
-              'title'       => __('Prune Days'),
-              'name'        => 'auto_prune_day',
-              'data'        => $availablePruneDays
             ])
             @include('partials.form-textarea', [
               'title'    => __('Remark'),
