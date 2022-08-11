@@ -127,9 +127,9 @@ class BackupHistoryRepository extends BaseRepository
         $backup            = $this->show($backupId);
         $storage           = $this->storage->show($backup->storage_id);
         $storage->password = $storage->hashedPassword;
-        $fileName          = $backup->name;
+        $fileName          = $backup->filename;
         $delete            = $this->deleteFile($fileName, $storage);
-         
+
         return $this->delete($backupId);
     }
 

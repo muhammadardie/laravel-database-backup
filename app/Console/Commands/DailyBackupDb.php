@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Repositories\{ SchedulerRepository, DatabaseSourceRepository, StorageRepository, BackupHistoryRepository };
 use DB;
-use Illuminate\Support\Facades\Log;
+use Psr\Log\LoggerInterface as Log;
 
 class DailyBackupDb extends Command
 {
