@@ -75,21 +75,7 @@ class BackupHistoryRepository extends BaseRepository
         $storage           = $this->storage->show($backup->storage_id);
         $storage->password = $storage->hashedPassword;
         $fileName          = $backup->filename;
-        
-        // if create backup using custom path then using $backup->path
-        if($backup->path) {
-            $path = $backup->path;
-        } 
-
-        // if storage used during backup is localhost then using default path for localhost
-        elseif($storage->host === 'localhost') { 
-            $path = storage_path('app');
-        } 
-
-        // if none above using default path from storage created
-        else {
-            $path = $storage->path; 
-        }
+        $path              = $storage->path;
 
         // set record backup to collection so it can set new key and value 
         $backup   = collect($backup);

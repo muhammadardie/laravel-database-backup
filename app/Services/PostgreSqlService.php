@@ -6,12 +6,12 @@ class PostgreSqlService
 {
     public static function pgdump()
     {
-        return \Config::get('backup.pgdump');
+        return '"'. \Config::get('backup.pgdump') .'"';
     }
 
     public static function psql()
     {
-        return \Config::get('backup.psql');
+        return '"'. \Config::get('backup.psql') .'"';
     }
 
     /**
@@ -24,7 +24,6 @@ class PostgreSqlService
         $outputPath = public_path($params['output_file']);
         $command = self::pgdump() . ' -d ' .  $params['db_name'] . ' -h ' . $params['host'] . ' -p ' . $params['port'] . ' -U ' . $params['username'] . ' -F custom > ' . $outputPath;
         putenv("PGPASSWORD=" . $params['password']);
-        
         exec($command, $output, $status);
         
         return $status === 0; // execute backup is successful only if the $status === 0
@@ -43,7 +42,6 @@ class PostgreSqlService
         $arrayDB = [];
         
         exec($command, $output, $status);
-        
         if(is_array($output) && !empty($output)) {
             foreach ($output as $key => $value) {
                 $dbName = strtok($value, '|');

@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-create-backup" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="modal-create-backup" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -121,8 +121,8 @@
   });
 
   function defaultName(databaseName) {
-    let now = @json(date('d-m-Y--H-i-s'));
+    let now = @json(date('Ymd_His'));
     
-    return `${databaseName}--${now}.backup`;
+    return `${databaseName}_${now}.backup`;
   }
 </script>

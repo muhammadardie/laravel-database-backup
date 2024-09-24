@@ -141,17 +141,11 @@ trait StorageTrait
             
             $this->setFilesystem($filesystem);
 
-            $store = Storage::disk($this->customFilesystem())
-                         ->putFileAs('',
-                            new File(public_path($fileName)), 
-                            $fileName
-                          );
-
+            $store = Storage::disk($this->customFilesystem())->put($fileName, file_get_contents(public_path($fileName)));
             // delete file after stored in disk
             unlink(public_path($fileName));
 
         } catch (\Exception $e) {
-
             // error message
             return $e->getMessage();
         }
@@ -169,7 +163,7 @@ trait StorageTrait
             \Config::set('filesystems.disks.' . $this->customFilesystem(),
                 [
                     'driver' => 'local',
-                    'root'   => storage_path('app'),
+                    'root'   => $disk->path,
                     'permissions' => [
                         'file' => [
                             'public' => 0664,
