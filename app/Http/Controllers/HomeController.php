@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Repositories\{ BackupHistoryRepository, DatabaseSourceRepository, StorageRepository };
 
 class HomeController extends Controller

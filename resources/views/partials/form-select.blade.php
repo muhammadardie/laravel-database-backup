@@ -34,4 +34,7 @@
     placeholder: "{{ \Lang::get('-- Select '. $title . ' --') }}", 
     width: '{{ isset($multiColumn) && $multiColumn ? '100%' : '50%' }}'
   });
+  $("select[name='{{ $name }}']").on("select2:close", function (e) {  
+      $(this).valid(); 
+  });
 </script>

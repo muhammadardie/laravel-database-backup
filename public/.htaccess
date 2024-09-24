@@ -19,9 +19,3 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
-
-<IfModule !mod_php7.c>
-    <FilesMatch \.(php|phar)$>
-        SetHandler "proxy:unix:/var/opt/remi/php74/run/php-fpm/www.sock|fcgi://localhost"
-    </FilesMatch>
-</IfModule>

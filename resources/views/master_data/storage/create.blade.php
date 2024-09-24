@@ -100,8 +100,9 @@
             }
 
             return;
-        }).error(function(err){
-           failedAjax(err, err.msg)
+        
+        }).fail(function(err){
+          failedAjax(err, err.msg)
         });
     }
   });

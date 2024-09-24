@@ -183,7 +183,7 @@ trait StorageTrait
                     'host'     => $disk->host,
                     'username' => $disk->username,
                     'password' => $disk->password,
-                    'port'     => $disk->port,
+                    'port'     => (int) $disk->port,
                     'root'     => $disk->path,
                 ]
             );
