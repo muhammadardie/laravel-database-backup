@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <base href="{{ asset('') }}">
-    <link rel="icon" href="db.ico">
+    <link rel="icon" type="image/x-icon" href="db.ico">
 
     <!-- Fonts and icons -->
     <script src="assets/plugins/webfont/webfont.min.js" type="text/javascript"></script>
