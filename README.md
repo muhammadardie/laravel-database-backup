@@ -87,11 +87,6 @@ A Laravel-based application to manage database backups
 
     Access the app at [http://localhost:8000/](http://localhost:8000/).
 
-## Demo
-- **URL**: https://ldbackup.muhammadardie.tech/
-- **Email**: local@mail.com
-- **Password**: 123456
-
 ### Note
 
 - The application is still in development and currently only supports PostgreSQL.
