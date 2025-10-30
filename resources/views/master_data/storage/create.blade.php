@@ -88,7 +88,7 @@
            processData: false,
            data: new FormData($('#form-create-storage')[0]), // The form with the file inputs.
            processData: false,
-           contentType: false                    // Using FormData, no need to process data.
+           contentType: false // Using FormData, no need to process data.
         }).done(function(res){
             if(res.status === true)
             {
@@ -100,8 +100,8 @@
             }
 
             return;
-        }).error(function(err){
-           failedAjax(err, err.msg)
+        }).fail(function(err){
+            failedAjax(err, err.msg)
         });
     }
   });
