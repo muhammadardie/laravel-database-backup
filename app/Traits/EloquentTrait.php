@@ -22,6 +22,9 @@ trait EloquentTrait
     // create a new record in the database
     public function store(array $data, $callback=false)
     {
+        // remove proengsoft_jsvalidation from array input if exist
+        unset($data['proengsoft_jsvalidation']);
+
         DB::beginTransaction();
         $trans = false;
 
@@ -44,6 +47,9 @@ trait EloquentTrait
     // update record in the database
     public function update(array $data, $id, $callback = false)
     {
+        // remove proengsoft_jsvalidation from array input if exist
+        unset($data['proengsoft_jsvalidation']);
+        
         DB::beginTransaction();
         $trans = false;
 

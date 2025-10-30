@@ -19,14 +19,14 @@
                            <span style="color:red">*</span>
                            Password
                            </label>
-                           <input type="password" class="form-control single-input" name="password" value="" placeholder="Password">
+                           <input type="password" class="form-control single-input" name="password" value="" placeholder="Password" autocomplete="on">
                         </div>
                         <div class="form-group row">
                            <label for="password_confirmation" class="single-label" style="flex: 0 0 30%;max-width: 30%;">
                            <span style="color:red">*</span>
                            Password Confirmation
                            </label>
-                           <input type="password" class="form-control single-input" name="password_confirmation" value="" placeholder="Password Confirmation">
+                           <input type="password" class="form-control single-input" name="password_confirmation" value="" placeholder="Password Confirmation" autocomplete="on">
                         </div>
                      </div>
                   </div>

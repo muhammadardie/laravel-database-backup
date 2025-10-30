@@ -167,7 +167,7 @@ class Helper
         } else if ($num <1000000000000) {
             $temp = $_this->terbilang($num/1000000000) . " MILYAR" . $_this->terbilang(fmod($num,1000000000));
         } else if ($num <1000000000000000) {
-            $temp = $_this->terbilang($num/1000000000000) . " TRILYUN" . $_this->terbilang(fmod($x,1000000000000));
+            $temp = $_this->terbilang($num/1000000000000) . " TRILYUN" . $_this->terbilang(fmod($num,1000000000000));
         }     
             return $temp;
     }
